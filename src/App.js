@@ -7,7 +7,8 @@ function App() {
   return (
     <div className="App">
       <h1>95Defender</h1>
-      <ImageConversion/>
+      <ImageConversion />
+      <h3>Protect your images with N95 masks</h3>
     </div>
   );
 }
@@ -21,20 +22,40 @@ class ImageConversion extends React.Component {
 
   onDrop(picture) {
     this.setState({ image: picture });
-    //this.handleSubmit();
+    console.log(picture);
+    this.getBase64(picture[0], (result) => {
+      this.handleSubmit(result)
+    })
   }
 
-  handleSubmit = () => {
-    const formData = new FormData();
-    formData.append(
-      'image', this.state.image
-    )
-    formData.append('responseType', 'stream');
-    let url = '';
-    axios.get(url, formData)
-      .then(response => {
-        this.setState({ masked_image: response.data });
+  handleSubmit = (img64) => {
+    const bytes = img64.split(/,(.+)/)[1];
+    let url = 'https://d2j3jnab3grf9w.cloudfront.net/api/mask_image';
+    const data = new FormData();
+    data.append("image", bytes);
+    const requestOptions = {
+      method: 'POST',
+      body: data
+    };
+    console.log(requestOptions);
+    fetch(url, requestOptions)
+      .then(response => response.text())
+      .then((imgBytes) => {
+        console.log(imgBytes);
+        this.setState({masked_image: imgBytes});
       })
+      .catch(error => { console.log(error.response) });
+  }
+
+  getBase64(file, cb) {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+      cb(reader.result)
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
   }
 
   render() {
@@ -44,11 +65,11 @@ class ImageConversion extends React.Component {
           <ImageUploader withIcon={true} buttonText="Upload new image"
             onChange={this.onDrop}
             imgExtension={[".jpg", ".png"]}
-            maxFileSize={5242880} 
+            maxFileSize={5242880}
             singleImage={true}
-            label ='Max File Size: 5MB, accepted: .JPG | .PNG'
-            />
-          <img src={this.state.masked_image} alt="Protected image"></img>
+            label='Max File Size: 5MB, accepted: .JPG | .PNG'
+          />
+          <img src={`data:image/jpeg;base64,${this.state.masked_image}`} alt="Protected image"></img>
         </div>
       );
     } else {
@@ -58,7 +79,7 @@ class ImageConversion extends React.Component {
             onChange={this.onDrop}
             imgExtension={[".jpg", ".png"]}
             singleImage={true}
-            label ='Max File Size: 5MB, accepted: .JPG | .PNG'
+            label='Max File Size: 5MB, accepted: .JPG | .PNG'
             maxFileSize={5242880} />
         </div>
       );
