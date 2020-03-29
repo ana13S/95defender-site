@@ -30,7 +30,7 @@ class ImageConversion extends React.Component {
 
   handleSubmit = (img64) => {
     const bytes = img64.split(/,(.+)/)[1];
-    let url = 'https://d2j3jnab3grf9w.cloudfront.net/api/mask_image';
+    let url = 'https://d2ugoy1n3m739j.cloudfront.net/api/mask_image';
     const data = new FormData();
     data.append("image", bytes);
     const requestOptions = {
