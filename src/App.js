@@ -77,7 +77,7 @@ class ImageConversion extends React.Component {
         <div className="imageConversion">
           <ImageUploader withIcon={true} buttonText="Upload image"
             onChange={this.onDrop}
-            imgExtension={[".jpg"]}
+            imgExtension={[".jpg", ".jpeg"]}
             singleImage={true}
             label='Max File Size: 5MB, accepted: .JPG'
             maxFileSize={5242880} />
