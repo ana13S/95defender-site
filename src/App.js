@@ -64,10 +64,10 @@ class ImageConversion extends React.Component {
         <div className="imageConversion">
           <ImageUploader withIcon={true} buttonText="Upload new image"
             onChange={this.onDrop}
-            imgExtension={[".jpg", ".png"]}
+            imgExtension={[".jpg"]}
             maxFileSize={5242880}
             singleImage={true}
-            label='Max File Size: 5MB, accepted: .JPG | .PNG'
+            label='Max File Size: 5MB, accepted: .JPG'
           />
           <img src={`data:image/jpeg;base64,${this.state.masked_image}`} alt="Protected image"></img>
         </div>
@@ -77,9 +77,9 @@ class ImageConversion extends React.Component {
         <div className="imageConversion">
           <ImageUploader withIcon={true} buttonText="Upload image"
             onChange={this.onDrop}
-            imgExtension={[".jpg", ".png"]}
+            imgExtension={[".jpg"]}
             singleImage={true}
-            label='Max File Size: 5MB, accepted: .JPG | .PNG'
+            label='Max File Size: 5MB, accepted: .JPG'
             maxFileSize={5242880} />
         </div>
       );
